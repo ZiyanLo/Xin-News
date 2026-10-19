@@ -2,7 +2,7 @@
 
 Xin News 是一个极简新闻聚合网站，采用 Hacker News 式编号列表。
 
-线上网站：https://xinwen-global-brief.zyanlo903.chatgpt.site/
+GitHub Pages 地址（启用 Pages 并部署成功后）：https://ziyanlo.github.io/Xin-News/\n\n原 Sites 地址：https://xinwen-global-brief.zyanlo903.chatgpt.site/
 
 ## 本地运行
 
@@ -34,4 +34,4 @@ node scripts/check-news.cjs
 
 该检查根据当前北京时间统计当天资讯；旧快照在未来日期执行时需要先补充当日资讯。
 
-GitHub 保存代码，网站继续由现有 Sites 托管；首次同步本身不会启用 GitHub 自动部署或双向同步。
+## GitHub Pages 部署\n\n仓库已提供 `.github/workflows/pages.yml`。在仓库 Settings → Pages → Build and deployment 中，将 Source 设为 **GitHub Actions**。之后每次推送 `main` 分支的 `dist/` 文件，都会自动发布静态网站。\n\n网站资源均为本站相对路径，不依赖外部字体或脚本。GitHub Pages 无需 ChatGPT 登录，但实际访问稳定性取决于地区与网络；未验证中国大陆所有运营商的连通情况。\n\nPages 自动发布只负责把仓库已有文件上线，不会自动采集新闻；日更任务仍需将更新提交到本仓库。
