@@ -15,6 +15,8 @@
 
 每天选编目标为 10–20 条，保留最近 30 天资料。来源包括媒体报道、公开科技讨论及产品体验；投稿、转述与评论分别标注。
 
+每次更新会删除最近30天（含当天）以外的资讯。更新脚本先核对当天有10–20条合格记录，再写入清理后的数据；校验失败时不会覆盖原文件。
+
 数据保存在 `dist/news.json`，选编与核实规则见 [EDITORIAL.md](EDITORIAL.md)。GitHub Actions 负责发布仓库中的静态文件，不负责自动采集新闻。
 
 ## 本地预览
@@ -36,6 +38,7 @@ python3 -m http.server 5173 --directory dist
 更新新闻数据前，请遵循选编规则；提交前运行：
 
 ```sh
+node scripts/update-news.cjs
 node scripts/check-news.cjs
 ```
 
@@ -50,8 +53,14 @@ node scripts/check-news.cjs
 | `dist/app.js` | 分类、筛选、时间显示与详情交互 |
 | `dist/news.json` | 新闻数据 |
 | `EDITORIAL.md` | 选编规则 |
+| `scripts/update-news.cjs` | 校验当天数量并删除30天前记录 |
+| `scripts/news-policy.cjs` | 统一的北京时间与保留期规则 |
 | `scripts/check-news.cjs` | 新闻数据检查 |
 | `.github/workflows/pages.yml` | GitHub Pages 自动部署 |
 | `.openai/hosting.json` | 原 Sites 托管配置，GitHub Pages 不使用 |
 
 网站无需 ChatGPT 登录。中国大陆不同地区及运营商的访问稳定性尚未全面验证。
+
+## 免责声明
+
+本站提供公开资讯索引与摘要，不代表认同来源观点；投稿、转述和评论不等同于已经核实的事实。内容可能有遗漏或延迟，请以原始来源与后续更正为准，不构成投资、医疗或法律建议。原文版权归相关权利人所有，问题可通过仓库 Issues 反馈。

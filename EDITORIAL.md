@@ -22,7 +22,7 @@
 - `date` 为北京时间来源发布日期；有可核对的准确时分时，使用带时区的 ISO 时间存入 `publishedAt`。
 - `url` 指向这条资讯原文；`sourceHomepage` 可指定媒体或账号主页。
 - `summary` 只保留一句简明摘要，核实状态也融入这句话。
-- `updated`、`from`、`to` 随选编日期更新，清理过期条目。
+- `updated`、`from`、`to` 由更新脚本按北京时间滚动设置，最近30天包含当天，起始日为当天减29天。
 - `dailyEdition` 保留本期选编记录；页面排序不使用其中 ID 的排列顺序。
 
 “今日”仅显示北京时间当天发布的条目，按 `publishedAt` 倒序。只有日期、没有具体时分的条目放在当天末尾，显示“时间未提供”，不得虚构时分。昨日显示“昨日”，本周其余日期显示“周几”，更早显示月日。
@@ -42,6 +42,7 @@
 提交新闻数据前运行：
 
 ```sh
+node scripts/update-news.cjs
 node scripts/check-news.cjs
 ```
 
@@ -50,3 +51,11 @@ node scripts/check-news.cjs
 更新提交到本仓库 `main` 分支后，`dist/` 的变化由 `.github/workflows/pages.yml` 自动发布到 GitHub Pages。确认 Actions 部署成功，再检查线上日期、条数和功能。GitHub Pages 工作流只负责发布，不会自动采集新闻。
 
 `.openai/hosting.json` 是原 Sites 部署配置，不参与当前 GitHub Pages 发布。不要把 Sites 发布步骤作为本仓库的部署要求，不存储凭据。
+
+## 日更执行与同步
+
+沿用已启用的北京时间每天09:00选编任务。每次必须完成查源、去重和当日10—20条选编后，先将候选数据交给 `scripts/update-news.cjs`，验证通过后才写入正式数据。脚本会真正从JSON删除超出最近30天的记录，而非只在页面隐藏；失败时保留原文件，继续补查，仍无法完成时报告失败，不能声称已更新。
+
+正式仓库为 `ZiyanLo/Xin-News`，正式网址为 https://ziyanlo.github.io/Xin-News/ 。通过GitHub连接获取main分支最新数据和说明，使用同一套规则更新该仓库的 `dist/news.json` 并提交；确认GitHub Actions部署成功，再验证线上日期、条数和最早日期。原Sites任务如继续维护原地址，必须同时同步这个GitHub仓库，不能只更新旧Sites网站。更新main前检查远端最新版本，不覆盖其他更改。
+
+关于弹窗和README保留免责声明：公开索引与简要摘要，不背书原文观点，不把未经核实的说法当事实，可能遗漏或延迟；以原文和更正为准，不构成投资、医疗或法律建议，尊重原作者权利。

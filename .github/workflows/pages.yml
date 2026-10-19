@@ -6,6 +6,7 @@ on:
     paths:
       - 'dist/**'
       - '.github/workflows/pages.yml'
+      - 'scripts/**'
   workflow_dispatch:
 
 permissions:
@@ -31,6 +32,8 @@ jobs:
           node --check dist/app.js
           node -e "JSON.parse(require('fs').readFileSync('dist/news.json', 'utf8'))"
           test -f dist/index.html
+          node --test scripts/news-policy.test.cjs
+          node scripts/check-news.cjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload static site
