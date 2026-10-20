@@ -7,6 +7,9 @@ on:
       - 'dist/**'
       - '.github/workflows/pages.yml'
       - 'scripts/**'
+  schedule:
+    # UTC: 北京时间09:07开始，至11:52每15分钟补查一次。
+    - cron: '7,22,37,52 1-3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -19,7 +22,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  sync:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Test sync and selection guards
+        run: node --test scripts/*.test.cjs
+      - name: Sync today's validated edition
+        run: |
+          node scripts/sync-sites.cjs
+          node scripts/check-news.cjs
+      - name: Save news in GitHub
+        run: |
+          if ! git diff --quiet -- dist/news.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add dist/news.json
+            git commit -m "Sync daily Xin News edition"
+            git push origin HEAD:main
+          fi
   deploy:
+    needs: sync
+    if: always() && (needs.sync.result == 'success' || needs.sync.result == 'skipped')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -27,12 +56,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Check static files
         run: |
           node --check dist/app.js
           node -e "JSON.parse(require('fs').readFileSync('dist/news.json', 'utf8'))"
           test -f dist/index.html
-          node --test scripts/news-policy.test.cjs
+          node --test scripts/*.test.cjs
           node scripts/check-news.cjs
       - name: Configure Pages
         uses: actions/configure-pages@v5
