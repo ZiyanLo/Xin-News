@@ -4,12 +4,16 @@ const {validateNews, beijingDay} = require('./news-policy.cjs');
 const {validateSources} = require('./source-policy.cjs');
 const SOURCE = 'https://xinwen-global-brief.zyanlo903.chatgpt.site/news.json';
 function selectUpdate(candidate, current, now = new Date()) {
+  if (Date.parse(current.updatedAt) > Date.parse(candidate.updatedAt)) {
+    validateNews(current, now);
+    validateSources(current, now);
+    return null;
+  }
   validateNews(candidate, now);
   validateSources(candidate, now);
   const today = beijingDay(now);
   const stamp = Date.parse(candidate.updatedAt);
   if (candidate.updated !== today || !Number.isFinite(stamp) || stamp > now.getTime()) throw Error('来源尚无当天有效更新');
-  if (Date.parse(current.updatedAt) > stamp) return null;
   const existing = new Map(current.stories.map(s => [s.id, s]));
   for (const s of candidate.stories) {
     if (existing.has(s.id) && existing.get(s.id).url !== s.url) throw Error(`条目 ${s.id} 的来源变更，须人工核对`);

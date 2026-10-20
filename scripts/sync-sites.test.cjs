@@ -9,3 +9,5 @@ test('rejects stale or incomplete source without writing',()=>{const stale=editi
 test('never overwrites newer GitHub curation or reassigns IDs',()=>{const newer=edition();newer.updatedAt='2026-10-20T01:05:00Z';assert.equal(selectUpdate(edition(),newer,now),null);const changed=edition();changed.stories[0].url='https://example.com/changed';assert.throws(()=>selectUpdate(changed,edition(),now));});
 
 test('counts Reuters syndication as one source and rejects concentrated editions',()=>{const bad=edition();bad.stories.forEach(s=>{delete s.sourceFamily;s.source='路透社 · 转述';});assert.throws(()=>selectUpdate(bad,edition(),now),/5个原始来源/);const concentrated=edition();concentrated.stories.slice(0,6).forEach(s=>s.sourceFamily='one');assert.throws(()=>selectUpdate(concentrated,edition(),now),/三分之一/);});
+
+test("a newer valid GitHub edition survives an older concentrated Sites edition",()=>{const current=edition();current.updatedAt="2026-10-20T01:05:00Z";const old=edition();old.stories.forEach(s=>s.sourceFamily="one");assert.equal(selectUpdate(old,current,now),null);});
