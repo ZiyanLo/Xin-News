@@ -2634,20 +2634,26 @@
       "company": ""
     },
     {
-      "id": 150,
-      "sourceFamily": "Reuters",
-      "source": "路透社",
-      "channel": "全球",
-      "cat": "社会民生",
-      "region": "突尼斯",
-      "kind": "现场报道",
-      "title": "突尼斯多地抗议者与警方冲突，首都郊区警方施放催泪瓦斯",
-      "summary": "首都郊区埃塔达曼的抗议由一名被拘男子死亡引发，南部两座城镇也发生冲突；死因说法仍有分歧，内政部尚未回应。",
-      "url": "https://www.reuters.com/world/africa/tunisian-police-clash-with-protesters-capital-day-heightened-tensions-2026-10-22/",
-      "sourceHomepage": "https://www.reuters.com/world/africa/",
-      "publishedAt": "2026-10-22T22:21:00Z",
+      "id": 151,
+      "sourceFamily": "The Verge",
+      "source": "The Verge",
+      "channel": "工具体验",
+      "cat": "科技",
+      "region": "全球",
+      "kind": "产品停运公告报道",
+      "title": "Arc浏览器将于12月22日停运，团队转向AI浏览器Dia",
+      "summary": "Arc已停止新账号注册；移动端AI功能和同步将于11月23日关闭，桌面端12月22日停止使用并停用账号。",
+      "url": "https://www.theverge.com/tech/1016832/arc-browser-shutting-down",
+      "sourceHomepage": "https://www.theverge.com/apps",
+      "publishedAt": "2026-10-22T17:03:00Z",
       "date": "2026-10-23",
-      "verificationNote": "路透社确认警方施放催泪瓦斯；死者家属与当地媒体对死因说法不一，相关指控尚未独立证实。",
+      "links": [
+        {
+          "label": "Arc官方停运说明",
+          "url": "https://arc.net/"
+        }
+      ],
+      "verificationNote": "停运时间表已与Arc官方说明交叉核对；Arc将被Dia取代是厂商表述。",
       "area": "国际",
       "featured": true,
       "company": ""
@@ -2661,7 +2667,6 @@
     "date": "2026-10-23",
     "ids": [
       144,
-      150,
       140,
       147,
       136,
@@ -2671,11 +2676,12 @@
       149,
       148,
       143,
+      151,
       142,
       137,
       135,
       145
     ]
   },
-  "updatedAt": "2026-10-22T23:01:55.799Z"
+  "updatedAt": "2026-10-22T23:05:41.880Z"
 }
